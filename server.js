@@ -4,6 +4,9 @@ const { readFile, writeFile } = require('./file')
 const bodyPraser = (req) => {
   let body = ''
   return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      reject(new Error("body parser timeout"))
+    }, 2000)
     req.on('data', function (data) {
       body += data
     })
@@ -24,11 +27,11 @@ const server = http.createServer(async (req, res) => {
       res.end(JSON.stringify(obj.students))
     } else if (req.url === '/students' && req.method === 'POST') {
       const body = await bodyPraser(req)
-      const student = JSON.parse(body)
-      const data = await readFile()
-      data.students.push(student)
+      // const student = JSON.parse(body)
+      // const data = await readFile()
+      // data.students.push(student)
       // await writeFile(data)
-      res.end(JSON.stringify(data))
+      res.end(body)
     } else {
       res.end('invalid route')
     }
