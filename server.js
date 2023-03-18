@@ -1,13 +1,15 @@
 const http = require('http')
 const { readFile, writeFile } = require('./file')
 
-const bodyPraser = async (req) => {
+const bodyPraser = (req) => {
   let body = ''
-  req.on('data', function (data) {
-    body += data
-  })
-  req.on('end', function (data) {
-    // resolve promise
+  return new Promise((resolve, reject) => {
+    req.on('data', function (data) {
+      body += data
+    })
+    req.on('end', function (data) {
+      resolve(body)
+    })
   })
 }
 
@@ -22,11 +24,11 @@ const server = http.createServer(async (req, res) => {
       res.end(JSON.stringify(obj.students))
     } else if (req.url === '/students' && req.method === 'POST') {
       const body = await bodyPraser(req)
-      // const student = JSON.parse(body)
-      // const data = await readFile()
-      // data.students.push(student)
+      const student = JSON.parse(body)
+      const data = await readFile()
+      data.students.push(student)
       // await writeFile(data)
-      res.end(body)
+      res.end(JSON.stringify(data))
     } else {
       res.end('invalid route')
     }
