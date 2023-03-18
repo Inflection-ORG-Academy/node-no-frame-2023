@@ -11,7 +11,7 @@ const bodyPraser = (req) => {
       body += data
     })
     req.on('end', function (data) {
-      resolve(body)
+      resolve(JSON.parse(body))
     })
   })
 }
@@ -27,11 +27,10 @@ const server = http.createServer(async (req, res) => {
       res.end(JSON.stringify(obj.students))
     } else if (req.url === '/students' && req.method === 'POST') {
       const body = await bodyPraser(req)
-      // const student = JSON.parse(body)
-      // const data = await readFile()
-      // data.students.push(student)
-      // await writeFile(data)
-      res.end(body)
+      const data = await readFile()
+      data.students.push(body)
+      await writeFile(data)
+      res.end("success")
     } else {
       res.end('invalid route')
     }

@@ -19,4 +19,7 @@ exports.readFile = async () => {
 }
 
 // waite file
-exports.writeFile = async (data) => {}
+exports.writeFile = async (data) => {
+  const contents = JSON.stringify(data)
+  await fsp.writeFile(dbFileName, contents, { encoding: 'utf8' })
+}
