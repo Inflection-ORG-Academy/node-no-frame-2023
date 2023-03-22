@@ -44,34 +44,44 @@ const urlMatcher = (req, matchUrl, method) => {
   return { isMatched, params };
 };
 
-const server = http.createServer(async (req, res) => {
-  const json = { 'Content-Type': 'application/json' };
-  try {
-    if (urlMatcher(req, '/', 'GET').isMatched) {
-      res.end('server is running');
-    } else if (urlMatcher(req, '/students', 'GET').isMatched) {
-      const obj = await readFile();
-      res.writeHead(200, json);
-      res.end(JSON.stringify(obj.students));
-    } else if (urlMatcher(req, '/students', 'POST').isMatched) {
-      const body = await bodyPraser(req);
-      const data = await readFile();
-      data.students.push(body);
-      await writeFile(data);
-      res.end('success');
-    } else if (urlMatcher(req, '/students/:id', 'PATCH').isMatched) {
-      console.log(urlMatcher(req, '/students/:id', 'PATCH'));
-      res.end('dynamic route');
-    } else {
-      res.end('invalid route');
+const c1 = (req, res, data) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      console.log('c1');
+      res.end('apple');
+      resolve({ next: true, name: 'apple' });
+    }, 4000);
+  });
+};
+
+const c2 = (req, res, data) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      console.log(data);
+      console.log('c2');
+      resolve();
+    }, 1000);
+  });
+};
+
+const globalMiddleware = [c1, c2];
+
+const run = async (fnArray, req, res) => {
+  let data = undefined;
+  for (let i = 0; i < fnArray.length; i++) {
+    data = await fnArray[i](req, res, data);
+    if (data?.next) {
+      continue;
     }
+    break;
+  }
+};
+
+const server = http.createServer(async (req, res) => {
+  try {
+    await run(globalMiddleware, req, res);
   } catch (e) {
-    res.writeHead(500, json);
-    res.end(
-      JSON.stringify({
-        message: e.message,
-      })
-    );
+    console.log(e);
   }
 });
 
