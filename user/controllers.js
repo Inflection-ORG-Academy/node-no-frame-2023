@@ -1,4 +1,12 @@
 exports.userSignup = async (req, res, data) => {
+  if (!req.body.email || !req.body.password || !req.body.name) {
+    res.error = {
+      code: 400,
+      message: 'invalid input'
+    }
+    return { next: true }
+  }
+
   res.end("user signup")
 }
 

@@ -5,6 +5,7 @@ const { run } = require('./runner');
 const { authentication, authorization } = require('./middleware/auth');
 const { userSignup, userLogin, userProfile, userUpdateProfile } = require('./user/controllers');
 const { employeeLogin } = require('./emploies/controllers');
+const { globalErrorHandler } = require('./error');
 
 
 const globalMiddleware = [
@@ -15,7 +16,7 @@ const globalMiddleware = [
   urlMatcher('/users/profile', 'PATCH', authentication, authorization, userUpdateProfile),
   urlMatcher('/emploies/login', 'POST', employeeLogin),
   // resChecker,
-  // errorChecker,
+  globalErrorHandler
 ];
 
 const server = http.createServer(async (req, res) => {
