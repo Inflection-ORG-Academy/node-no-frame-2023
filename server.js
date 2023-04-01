@@ -3,7 +3,7 @@ const { bodyPraser } = require('./bodyParser');
 const { urlMatcher } = require('./urlMatcher');
 const { run } = require('./runner');
 const { authentication, authorization } = require('./middleware/auth');
-const { userSignup, userLogin } = require('./user/controllers');
+const { userSignup, userLogin, userProfile, userUpdateProfile } = require('./user/controllers');
 const { employeeLogin } = require('./emploies/controllers');
 
 
