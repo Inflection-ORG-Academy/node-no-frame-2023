@@ -1,3 +1,6 @@
+const { createHash } = require('crypto');
+const hash = createHash('sha256');
+
 exports.generateNextId = (data) => {
   if (!Array.isArray(data) || !data.length) {
     return 1;
@@ -10,3 +13,8 @@ exports.generateNextId = (data) => {
   }
   return max + 1;
 };
+
+exports.hashPassword = (password) => {
+  hash.update(password);
+  return hash.digest('hex')
+}
