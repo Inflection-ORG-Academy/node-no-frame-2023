@@ -1,13 +1,7 @@
-const { getStudents, addStudent } = require('./students/controllers');
 const { run } = require('./runner');
-const { auth } = require('./middleware/auth');
 
-const controllerMiddleware = {
-  '/students,GET': [auth, getStudents],
-  '/students,POST': [auth, addStudent],
-};
-
-exports.urlMatcher = (matchUrl, method) => {
+// TODO: query matcher not implemented
+exports.urlMatcher = (matchUrl, method, ...controllers) => {
   return async (req, res, data) => {
     if (req.method !== method) {
       return { next: true, data };
@@ -36,7 +30,7 @@ exports.urlMatcher = (matchUrl, method) => {
       return { next: true, data };
     }
     req.params = params;
-    data = await run(controllerMiddleware[`${matchUrl},${method}`], req, res);
+    data = await run(controllers, req, res);
     return { next: true, data };
   };
 };
