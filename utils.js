@@ -1,5 +1,4 @@
-const { createHash } = require('crypto');
-const hash = createHash('sha256');
+const { scrypt, randomBytes } = require('crypto');
 
 exports.generateNextId = (data) => {
   if (!Array.isArray(data) || !data.length) {
@@ -14,7 +13,28 @@ exports.generateNextId = (data) => {
   return max + 1;
 };
 
+const passowrdHashLength = 90
+const hashIter = 1024
+
 exports.hashPassword = (password) => {
-  hash.update(password);
-  return hash.digest('hex')
+  return new Promise((resolve, reject) => {
+    randomBytes(30, (err, buf) => {
+      if (err) throw reject(err);
+      const salt = buf.toString('base64')
+      scrypt(password, salt, passowrdHashLength, { N: hashIter }, (err, derivedKey) => {
+        if (err) throw reject(err);
+        resolve(`${salt}.${derivedKey.toString('base64')}`)
+      });
+    });
+  })
+}
+
+exports.verifyPassword = (password, hashPassword) => {
+  return new Promise((resolve, reject) => {
+    const [salt, hash] = hashPassword.split('.')
+    scrypt(password, salt, passowrdHashLength, { N: hashIter }, (err, derivedKey) => {
+      if (err) throw reject(err);
+      resolve(derivedKey.toString('base64') === hash)
+    });
+  })
 }

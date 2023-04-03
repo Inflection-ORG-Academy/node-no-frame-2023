@@ -52,13 +52,16 @@ exports.userSignup = async (req, res, data) => {
     }
     return { next: true }
   }
-  hashedPassword = hashPassword(req.body.password)
+  const hashedPassword = await hashPassword(req.body.password)
   dbData.users[req.body.email] = {
     name: req.body.name,
     password: hashedPassword
   }
   await writeFile(dbData)
-  res.end("signup successful")
+  res.writeHead(200, {
+    'Content-Type': 'application/json',
+  });
+  res.end(JSON.stringify({ message: "signup successful" }))
 }
 
 exports.userLogin = async (req, res, data) => {
