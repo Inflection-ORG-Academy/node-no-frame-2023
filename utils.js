@@ -1,5 +1,7 @@
 const { scrypt, randomBytes, createHmac } = require('crypto');
 
+const ServerSecretKey = 'osiduvgbksdfcvkhjsfgyisdfvhakfuvhjdfbSDASGvcdTWCDG'
+
 exports.generateNextId = (data) => {
   if (!Array.isArray(data) || !data.length) {
     return 1;
@@ -40,9 +42,7 @@ exports.verifyPassword = (password, hashPassword) => {
 }
 
 exports.generateToken = (data) => {
-  const strData = JSON.stringify(data)
-  let buff = Buffer.from(strData);
-  let encoadedData = buff.toString('base64');
-  const sign = createHmac('sha256', 'osiduvgbksdfcvkhjsfgyisdfvhakfuvhjdfbSDASGvcdTWCDG').update(strData).digest("base64");
-  return `${encoadedData}.${sign}`
+  const base64Data = Buffer.from(JSON.stringify(data)).toString('base64');
+  const sign = createHmac('sha256', ServerSecretKey).update(base64Data).digest("base64");
+  return `${base64Data}.${sign}`
 }
