@@ -1,6 +1,7 @@
 const { scrypt, randomBytes, createHmac } = require('crypto');
 
 const ServerSecretKey = 'osiduvgbksdfcvkhjsfgyisdfvhakfuvhjdfbSDASGvcdTWCsjkdvbagbJWEHRBAJKRGBAEJHBGAUKGBAKUJFGBAEKBAEKGRBAERDFKVAHAGKFJBHDG'
+const tokenExpiry = 3600000
 const signer = createHmac('sha512', ServerSecretKey)
 
 exports.generateNextId = (data) => {
@@ -46,4 +47,25 @@ exports.generateToken = (data) => {
   const base64Data = Buffer.from(JSON.stringify(data)).toString('base64');
   const sign = signer.update(base64Data).digest("base64");
   return `${base64Data}.${sign}`
+}
+
+const verifyToken = (token) => {
+  // getting data and sign from old token
+  const [dataBase64, sign] = token.split(".")
+  // generate new sign from data
+  const newSign = signer.update(dataBase64).digest("base64");
+  // match old and new sign
+  if (newSign !== sign) {
+    throw new Error("token malformed")
+  }
+  // check token exipry
+  // 1. convert base64 to utf8 string
+  const strData = Buffer.from(dataBase64, 'base64').toString()
+  // 2. convert string to object
+  const data = JSON.parse(strData)
+  // 3. get iat value 
+  // 3. iat+expiry > current time ->  success
+  if (data.iat + tokenExpiry < Date.now()) {
+    throw new Error("token expired")
+  }
 }
