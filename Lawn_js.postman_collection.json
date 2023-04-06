@@ -54,7 +54,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"k@k.com\",\n    \"name\": \"shjsdvcsh\",\n    \"password\": \"123456\"\n}",
+							"raw": "{\n    \"email\": \"k@k.com\",\n    \"name\": \"kiwi\",\n    \"password\": \"123456\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -88,13 +88,7 @@
 							]
 						},
 						"method": "GET",
-						"header": [
-							{
-								"key": "token",
-								"value": "{{JWT}}",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"url": {
 							"raw": "{{URL}}/users/profile",
 							"host": [
@@ -111,8 +105,27 @@
 				{
 					"name": "Update Me",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PATCH",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"KIWI\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
 							"raw": "{{URL}}/users/profile",
 							"host": [

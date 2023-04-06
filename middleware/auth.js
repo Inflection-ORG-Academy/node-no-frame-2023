@@ -3,7 +3,12 @@ const { verifyToken } = require("../utils");
 
 exports.authentication = async (req, res, data) => {
   try {
-    const tokenData = verifyToken(req.headers.token)
+    const bearerToken = req.headers.authorization
+    const [authType, token] = bearerToken.split(" ")
+    if (authType !== 'Bearer') {
+      throw new ServerError(403, "invalid authentication method")
+    }
+    const tokenData = verifyToken(token)
     req.tokenData = tokenData
   } catch (e) {
     throw new ServerError(403, e.message)
