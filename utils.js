@@ -1,7 +1,7 @@
 const { scrypt, randomBytes, createHmac } = require('crypto');
 
 const ServerSecretKey = 'osiduvgbksdfcvkhjsfgyisdfvhakfuvhjdfbSDASGvcdTWCsjkdvbagbJWEHRBAJKRGBAEJHBGAUKGBAKUJFGBAEKBAEKGRBAERDFKVAHAGKFJBHDG'
-const tokenExpiry = 36000
+const tokenExpiry = 3600000
 
 exports.generateNextId = (data) => {
   if (!Array.isArray(data) || !data.length) {

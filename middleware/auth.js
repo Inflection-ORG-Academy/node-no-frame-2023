@@ -1,3 +1,4 @@
+const { ServerError } = require("../error");
 const { verifyToken } = require("../utils");
 
 exports.authentication = async (req, res, data) => {
@@ -5,10 +6,7 @@ exports.authentication = async (req, res, data) => {
     const tokenData = verifyToken(req.headers.token)
     req.tokenData = tokenData
   } catch (e) {
-    res.writeHead(403, {
-      'Content-Type': 'application/json',
-    });
-    return res.end(JSON.stringify({ error: e.message }))
+    throw new ServerError(403, e.message)
   }
   return { next: true }
 };

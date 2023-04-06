@@ -1,56 +1,29 @@
 const { readFile, writeFile } = require("../file")
+const { ServerError } = require("../error");
 const { hashPassword, verifyPassword, generateToken } = require("../utils")
 
 exports.userSignup = async (req, res, data) => {
   if (!req.body.email) {
-    res.error = {
-      code: 400,
-      message: 'email not supplied'
-    }
-    return { next: true }
+    throw new ServerError(400, 'email not supplied')
   }
   if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(req.body.email))) {
-    res.error = {
-      code: 400,
-      message: 'invalid email'
-    }
-    return { next: true }
+    throw new ServerError(400, 'invalid email')
   }
   if (!req.body.password) {
-    res.error = {
-      code: 400,
-      message: 'password not supplied'
-    }
-    return { next: true }
+    throw new ServerError(400, 'password not supplied')
   }
   if (req.body.password.length < 6) {
-    res.error = {
-      code: 400,
-      message: 'password is less than 6 character'
-    }
-    return { next: true }
+    throw new ServerError(400, 'password is less than 6 character')
   }
   if (!req.body.name) {
-    res.error = {
-      code: 400,
-      message: 'name not supplied'
-    }
-    return { next: true }
+    throw new ServerError(400, 'name not supplied')
   }
   if (req.body.name.length < 2) {
-    res.error = {
-      code: 400,
-      message: 'name is less than 2 character'
-    }
-    return { next: true }
+    throw new ServerError(400, 'name is less than 2 character')
   }
   const dbData = await readFile()
   if (dbData.users[req.body.email]) {
-    res.error = {
-      code: 403,
-      message: 'already registred, use another email to signup'
-    }
-    return { next: true }
+    throw new ServerError(403, 'already registred, use another email to signup')
   }
   const hashedPassword = await hashPassword(req.body.password)
   dbData.users[req.body.email] = {
@@ -66,52 +39,28 @@ exports.userSignup = async (req, res, data) => {
 
 exports.userLogin = async (req, res, data) => {
   if (!req.body.email) {
-    res.error = {
-      code: 400,
-      message: 'email not supplied'
-    }
-    return { next: true }
+    throw new ServerError(400, 'email not supplied')
   }
   if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(req.body.email))) {
-    res.error = {
-      code: 400,
-      message: 'invalid email'
-    }
-    return { next: true }
+    throw new ServerError(400, 'invalid email')
   }
   if (!req.body.password) {
-    res.error = {
-      code: 400,
-      message: 'password not supplied'
-    }
-    return { next: true }
+    throw new ServerError(400, 'password not supplied')
   }
   if (req.body.password.length < 6) {
-    res.error = {
-      code: 400,
-      message: 'password is less than 6 character'
-    }
-    return { next: true }
+    throw new ServerError(400, 'password is less than 6 character')
   }
 
   // find user
   const dbData = await readFile()
   const userData = dbData.users[req.body.email]
   if (!userData) {
-    res.error = {
-      code: 404,
-      message: 'email not found'
-    }
-    return { next: true }
+    throw new ServerError(404, 'email not found, signup first')
   }
 
   // verify password
   if (!verifyPassword(req.body.password, userData.password)) {
-    res.error = {
-      code: 400,
-      message: 'password is wrong'
-    }
-    return { next: true }
+    throw new ServerError(404, 'password is wrong')
   }
 
   // generate JWT token
