@@ -94,5 +94,27 @@ exports.userProfile = async (req, res, data) => {
 }
 
 exports.userUpdateProfile = async (req, res, data) => {
-  res.end("user update profile")
+  if (!req.tokenData.email) {
+    throw new Error("something went wrong")
+  }
+
+  // find user
+  const dbData = await readFile()
+  const userData = dbData.users[req.tokenData.email]
+  if (!userData) {
+    throw new ServerError(404, 'user not found')
+  }
+
+  userData.name = req.body.name
+  userData.phone = req.body.phone
+  userData.alternatePhone = req.body.alternatePhone
+  userData.address = req.body.address
+
+  await writeFile(dbData)
+
+  res.writeHead(200, {
+    'Content-Type': 'application/json',
+  });
+  delete userData.password
+  res.end(JSON.stringify(userData))
 }
