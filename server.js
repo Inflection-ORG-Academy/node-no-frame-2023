@@ -2,18 +2,33 @@ const http = require('http');
 const { bodyPraser } = require('./bodyParser');
 const { urlMatcher } = require('./urlMatcher');
 const { run } = require('./runner');
-const { authentication, authorization } = require('./middleware/auth');
+const { authentication, userAuthorization, employeeAuthorization } = require('./middleware/auth');
 const { userSignup, userLogin, userProfile, userUpdateProfile } = require('./user/controllers');
-const { employeeLogin } = require('./emploies/controllers');
-
+const {
+  employeeLogin,
+  employeeSignup,
+  myProfile,
+  updateMyProfile,
+  employeeProfile,
+  updateEmployeeProfile
+} = require('./emploies/controllers');
 
 const globalMiddleware = [
   bodyPraser,
+
+  // user
   urlMatcher('/users/signup', 'POST', userSignup),
   urlMatcher('/users/login', 'POST', userLogin),
-  urlMatcher('/users/profile', 'GET', authentication, authorization, userProfile),
-  urlMatcher('/users/profile', 'PATCH', authentication, authorization, userUpdateProfile),
-  urlMatcher('/emploies/login', 'POST', employeeLogin)
+  urlMatcher('/users/profile', 'GET', authentication, userAuthorization, userProfile),
+  urlMatcher('/users/profile', 'PATCH', authentication, userAuthorization, userUpdateProfile),
+
+  // employee
+  urlMatcher('/emploies/signup', 'POST', authentication, employeeAuthorization("m1", "admin"), employeeSignup),
+  urlMatcher('/emploies/login', 'POST', employeeLogin),
+  urlMatcher('/emploies/profile', 'GET', authentication, myProfile),
+  urlMatcher('/emploies/profile', 'PATCH', authentication, updateMyProfile),
+  urlMatcher('/emploies/profile', 'GET', authentication, employeeAuthorization("admin"), employeeProfile),
+  urlMatcher('/emploies/profile', 'PATCH', authentication, employeeAuthorization("admin"), updateEmployeeProfile),
 ];
 
 const server = http.createServer(async (req, res) => {

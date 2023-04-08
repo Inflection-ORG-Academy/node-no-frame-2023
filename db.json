@@ -2,13 +2,8 @@
   "emploies": {
     "a@a.com": {
       "name": "apple",
-      "password": "123456",
+      "password": "pFTtYFoLecxJCmSBpOUqodHjCcCwYmLT9w11cgOQ.lW1uc7INTy3lDnPS17KFfdBMr7FsRQ8t1cCWGptyE0pdUT4AIv1iqv5vhqbEjcgczX5f6Kv//q42aLuDT6CbGi0Vs+BN07FJPhKTl9sI7ln4ZjS1Q8+aJu0x",
       "role": "admin"
-    },
-    "b@b.com": {
-      "name": "banana",
-      "password": "123456",
-      "role": "manager"
     }
   },
   "users": {

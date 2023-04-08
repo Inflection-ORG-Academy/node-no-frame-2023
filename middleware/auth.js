@@ -19,7 +19,16 @@ exports.authentication = async (req, res, data) => {
   return { next: true }
 };
 
-exports.authorization = async (req, res, data) => {
-  console.log('checking authorization');
+exports.userAuthorization = async (req, res, data) => {
+  console.log('checking user authorization');
   return { next: true };
 };
+
+exports.employeeAuthorization = (...roles) => {
+  return async (req, res, data) => {
+    if (!roles.includes(req.tokenData.role)) {
+      throw new ServerError(403, "you are not authorized to perfrom this action. contact admin")
+    }
+    return { next: true }
+  }
+}
