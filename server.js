@@ -12,9 +12,11 @@ const {
   employeeProfile,
   updateEmployeeProfile
 } = require('./emploies/controllers');
+const { cors } = require('./cors');
 
 const globalMiddleware = [
   bodyPraser,
+  cors,
 
   // user
   urlMatcher('/users/signup', 'POST', userSignup),
