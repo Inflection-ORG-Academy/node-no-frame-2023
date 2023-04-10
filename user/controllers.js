@@ -59,7 +59,7 @@ exports.userLogin = async (req, res, data) => {
   }
 
   // verify password
-  if (!verifyPassword(req.body.password, userData.password)) {
+  if (!await verifyPassword(req.body.password, userData.password)) {
     throw new ServerError(404, 'password is wrong')
   }
 
