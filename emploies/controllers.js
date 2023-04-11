@@ -35,9 +35,6 @@ exports.employeeLogin = async (req, res, data) => {
     iat: Date.now()
   })
 
-  res.writeHead(200, {
-    'Content-Type': 'application/json',
-  });
   res.end(JSON.stringify({ message: "login successful", token }))
 }
 
@@ -71,9 +68,6 @@ exports.employeeSignup = async (req, res, data) => {
     role: "m2"
   }
   await writeFile(dbData)
-  res.writeHead(200, {
-    'Content-Type': 'application/json',
-  });
   res.end(JSON.stringify({ message: "signup successful" }))
 }
 

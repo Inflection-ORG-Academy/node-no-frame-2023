@@ -13,6 +13,7 @@ const {
   updateEmployeeProfile
 } = require('./emploies/controllers');
 const { cors } = require('./cors');
+const { ServerError } = require('./error');
 
 const globalMiddleware = [
   bodyPraser,
@@ -31,16 +32,19 @@ const globalMiddleware = [
   urlMatcher('/emploies/profile', 'PATCH', authentication, updateMyProfile),
   urlMatcher('/emploies/profile', 'GET', authentication, employeeAuthorization("admin"), employeeProfile),
   urlMatcher('/emploies/profile', 'PATCH', authentication, employeeAuthorization("admin"), updateEmployeeProfile),
+  (req, res, data) => { throw new ServerError(400, "route not found") }
 ];
 
 const server = http.createServer(async (req, res) => {
   try {
     await run(globalMiddleware, req, res);
   } catch (e) {
-    res.writeHead(e.code ? e.code : 500, {
-      'Content-Type': 'application/json',
-    });
-    res.end(JSON.stringify({ error: e.message }));
+    try {
+      res.statusCode = e.code ? e.code : 500
+      res.end(JSON.stringify({ error: e.message }));
+    } catch (e) {
+      console.log(e)
+    }
   }
 });
 
