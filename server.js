@@ -32,19 +32,16 @@ const globalMiddleware = [
   urlMatcher('/emploies/profile', 'PATCH', authentication, updateMyProfile),
   urlMatcher('/emploies/profile', 'GET', authentication, employeeAuthorization("admin"), employeeProfile),
   urlMatcher('/emploies/profile', 'PATCH', authentication, employeeAuthorization("admin"), updateEmployeeProfile),
-  (req, res, data) => { throw new ServerError(400, "route not found") }
+  (req, res) => { throw new ServerError(400, "route not found") }
 ];
 
 const server = http.createServer(async (req, res) => {
   try {
     await run(globalMiddleware, req, res);
   } catch (e) {
-    try {
-      res.statusCode = e.code ? e.code : 500
-      res.end(JSON.stringify({ error: e.message }));
-    } catch (e) {
-      console.log(e)
-    }
+    res.statusCode = e.serverCode ? e.serverCode : 500
+    res.end(JSON.stringify({ error: e.message }));
+    console.log("res error sent")
   }
 });
 

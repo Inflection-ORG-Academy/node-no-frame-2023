@@ -2,7 +2,7 @@ const { ServerError } = require("../error")
 const { readFile, writeFile } = require("../file")
 const { hashPassword, verifyPassword, generateToken } = require("../utils")
 
-exports.employeeLogin = async (req, res, data) => {
+exports.employeeLogin = async (req, res) => {
   if (!req.body.email) {
     throw new ServerError(400, 'email not supplied')
   }
@@ -38,7 +38,7 @@ exports.employeeLogin = async (req, res, data) => {
   res.end(JSON.stringify({ message: "login successful", token }))
 }
 
-exports.employeeSignup = async (req, res, data) => {
+exports.employeeSignup = async (req, res) => {
   if (!req.body.email) {
     throw new ServerError(400, 'email not supplied')
   }
@@ -71,18 +71,18 @@ exports.employeeSignup = async (req, res, data) => {
   res.end(JSON.stringify({ message: "signup successful" }))
 }
 
-exports.updateMyProfile = async (req, res, data) => {
+exports.updateMyProfile = async (req, res) => {
   res.end("Update my Profile")
 }
 
-exports.myProfile = async (req, res, data) => {
+exports.myProfile = async (req, res) => {
   res.end("get my Profile")
 }
 
-exports.employeeProfile = async (req, res, data) => {
+exports.employeeProfile = async (req, res) => {
   res.end("get any employee Profile only for admin")
 }
 
-exports.updateEmployeeProfile = async (req, res, data) => {
+exports.updateEmployeeProfile = async (req, res) => {
   res.end("update any employee Profile only for admin")
 }

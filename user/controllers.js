@@ -2,7 +2,7 @@ const { readFile, writeFile } = require("../file")
 const { ServerError } = require("../error");
 const { hashPassword, verifyPassword, generateToken } = require("../utils")
 
-exports.userSignup = async (req, res, data) => {
+exports.userSignup = async (req, res) => {
   if (!req.body.email) {
     throw new ServerError(400, 'email not supplied')
   }
@@ -34,7 +34,7 @@ exports.userSignup = async (req, res, data) => {
   res.end(JSON.stringify({ message: "signup successful" }))
 }
 
-exports.userLogin = async (req, res, data) => {
+exports.userLogin = async (req, res) => {
   if (!req.body.email) {
     throw new ServerError(400, 'email not supplied')
   }
@@ -69,7 +69,7 @@ exports.userLogin = async (req, res, data) => {
   res.end(JSON.stringify({ message: "login successful", token }))
 }
 
-exports.userProfile = async (req, res, data) => {
+exports.userProfile = async (req, res) => {
   if (!req.tokenData.email) {
     throw new Error("something went wrong")
   }
@@ -84,7 +84,7 @@ exports.userProfile = async (req, res, data) => {
   res.end(JSON.stringify(userData))
 }
 
-exports.userUpdateProfile = async (req, res, data) => {
+exports.userUpdateProfile = async (req, res) => {
   if (!req.tokenData.email) {
     throw new Error("something went wrong")
   }

@@ -1,7 +1,7 @@
 const { ServerError } = require("../error");
 const { verifyToken } = require("../utils");
 
-exports.authentication = async (req, res, data) => {
+exports.authentication = async (req, res) => {
   try {
     const bearerToken = req.headers.authorization
     if (!bearerToken) {
@@ -16,19 +16,19 @@ exports.authentication = async (req, res, data) => {
   } catch (e) {
     throw new ServerError(403, e.message)
   }
-  return { next: true }
+  return req.next = true
 };
 
-exports.userAuthorization = async (req, res, data) => {
+exports.userAuthorization = async (req, res) => {
   console.log('checking user authorization');
-  return { next: true };
+  return req.next = true;
 };
 
 exports.employeeAuthorization = (...roles) => {
-  return async (req, res, data) => {
+  return async (req, res) => {
     if (!roles.includes(req.tokenData.role)) {
       throw new ServerError(403, "you are not authorized to perfrom this action. contact admin")
     }
-    return { next: true }
+    return req.next = true
   }
 }

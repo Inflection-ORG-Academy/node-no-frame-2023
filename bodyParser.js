@@ -1,4 +1,4 @@
-exports.bodyPraser = (req, res, data) => {
+exports.bodyPraser = (req, res) => {
   let body = '';
   return new Promise((resolve, reject) => {
     setTimeout(() => {
@@ -12,7 +12,8 @@ exports.bodyPraser = (req, res, data) => {
         req.body = JSON.parse(body);
       } catch (e) {
       } finally {
-        resolve({ next: true });
+        req.next = true
+        resolve();
       }
     });
   });

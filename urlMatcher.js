@@ -2,14 +2,14 @@ const { run } = require('./runner');
 
 // TODO: query matcher not implemented
 exports.urlMatcher = (matchUrl, method, ...controllers) => {
-  return async (req, res, data) => {
+  return async (req, res) => {
     if (req.method !== method) {
-      return { next: true, data };
+      return req.next = true;
     }
     const reqUrl = req.url.split('/');
     const url = matchUrl.split('/');
     if (reqUrl.length !== url.length) {
-      return { next: true, data };
+      return req.next = true;
     }
     let isMatched = true;
     const params = {};
@@ -27,10 +27,9 @@ exports.urlMatcher = (matchUrl, method, ...controllers) => {
       }
     }
     if (!isMatched) {
-      return { next: true, data };
+      return req.next = true;
     }
     req.params = params;
-    data = await run(controllers, req, res);
-    return { next: true, data };
+    await run(controllers, req, res);
   };
 };
