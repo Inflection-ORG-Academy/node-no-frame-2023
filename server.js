@@ -31,6 +31,9 @@ const globalMiddleware = [
   urlMatcher('/emploies/profile', 'PATCH', authentication, updateMyProfile),
   urlMatcher('/emploies/profile', 'GET', authentication, employeeAuthorization("admin"), employeeProfile),
   urlMatcher('/emploies/profile', 'PATCH', authentication, employeeAuthorization("admin"), updateEmployeeProfile),
+
+  // not found
+  urlMatcher('*', '*'),
 ];
 
 const server = http.createServer(async (req, res) => {

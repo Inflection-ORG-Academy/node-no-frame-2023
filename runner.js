@@ -4,8 +4,9 @@ exports.run = async (fnArray, req, res) => {
   }
   let data = {};
   for (let i = 0; i < fnArray.length; i++) {
+    data.next = false
     data = await fnArray[i](req, res, data);
-    if (data?.next) {
+    if (data && data?.next) {
       continue;
     }
     break;
