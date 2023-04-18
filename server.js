@@ -29,8 +29,8 @@ const globalMiddleware = [
   urlMatcher('/emploies/login', 'POST', employeeLogin),
   urlMatcher('/emploies/profile', 'GET', authentication, myProfile),
   urlMatcher('/emploies/profile', 'PATCH', authentication, updateMyProfile),
-  urlMatcher('/emploies/profile', 'GET', authentication, employeeAuthorization("admin"), employeeProfile),
-  urlMatcher('/emploies/profile', 'PATCH', authentication, employeeAuthorization("admin"), updateEmployeeProfile),
+  urlMatcher('/emploies/profile/admin', 'POST', authentication, employeeAuthorization("admin"), employeeProfile),
+  urlMatcher('/emploies/profile/admin', 'PATCH', authentication, employeeAuthorization("admin"), updateEmployeeProfile),
 
   // not found
   urlMatcher('*', '*'),
@@ -40,9 +40,7 @@ const server = http.createServer(async (req, res) => {
   try {
     await run(globalMiddleware, req, res);
   } catch (e) {
-    res.writeHead(e.code ? e.code : 500, {
-      'Content-Type': 'application/json',
-    });
+    res.statusCode = e.code ? e.code : 500
     res.end(JSON.stringify({ error: e.message }));
   }
 });

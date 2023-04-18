@@ -35,9 +35,6 @@ exports.employeeLogin = async (req, res, data) => {
     iat: Date.now()
   })
 
-  res.writeHead(200, {
-    'Content-Type': 'application/json',
-  });
   res.end(JSON.stringify({ message: "login successful", token }))
 }
 
@@ -71,24 +68,108 @@ exports.employeeSignup = async (req, res, data) => {
     role: "m2"
   }
   await writeFile(dbData)
-  res.writeHead(200, {
-    'Content-Type': 'application/json',
-  });
   res.end(JSON.stringify({ message: "signup successful" }))
 }
 
-exports.updateMyProfile = async (req, res, data) => {
-  res.end("Update my Profile")
+exports.myProfile = async (req, res, data) => {
+  // find user
+  const dbData = await readFile()
+  const employeeData = dbData.emploies[req.tokenData.email]
+  if (!employeeData) {
+    throw new ServerError(404, 'email not found, contact your admin')
+  }
+
+  delete employeeData.password
+
+  res.end(JSON.stringify(employeeData))
 }
 
-exports.myProfile = async (req, res, data) => {
-  res.end("get my Profile")
+exports.updateMyProfile = async (req, res, data) => {
+  // validation
+  if (req.body.address && (req.body.address.length < 4 || req.body.address.length > 200)) {
+    throw new ServerError(400, 'supplied adress has invalid length')
+  }
+  if (req.body.name && (req.body.name.length < 2 || req.body.name.length > 50)) {
+    throw new ServerError(400, 'supplied name has invalid length')
+  }
+  if (req.body.phone && (typeof req.body.phone === 'string' || req.body.phone < 5000000000 || req.body.phone > 9999999999)) {
+    throw new ServerError(400, 'supplied phone is invalid')
+  }
+  if (req.body.altPhone && (typeof req.body.altPhone === 'string' || req.body.altPhone < 5000000000 || req.body.altPhone > 9999999999)) {
+    throw new ServerError(400, 'supplied alternate phone is invalid')
+  }
+
+  // find user
+  const dbData = await readFile()
+  const employeeData = dbData.emploies[req.tokenData.email]
+  if (!employeeData) {
+    throw new ServerError(404, 'email not found, contact your admin')
+  }
+
+  // delete req.body.role
+  // delete req.body.password
+  // delete req.body.email
+  // employeeData = { ...employeeData, ...req.body }
+  // dbData.emploies[req.tokenData.email] = employeeData
+
+  employeeData.address = req.body.address ? req.body.address : employeeData.address
+  employeeData.name = req.body.name ? req.body.name : employeeData.name
+  employeeData.phone = req.body.phone ? req.body.phone : employeeData.phone
+  employeeData.altPhone = req.body.altPhone ? req.body.altPhone : employeeData.altPhone
+
+  await writeFile(dbData)
+
+  delete employeeData.password
+  res.end(JSON.stringify(employeeData))
 }
 
 exports.employeeProfile = async (req, res, data) => {
-  res.end("get any employee Profile only for admin")
+  const dbData = await readFile()
+  const employeeData = dbData.emploies[req.body.email]
+  if (!employeeData) {
+    throw new ServerError(404, 'email not found, contact your admin')
+  }
+
+  delete employeeData.password
+
+  res.end(JSON.stringify(employeeData))
 }
 
 exports.updateEmployeeProfile = async (req, res, data) => {
-  res.end("update any employee Profile only for admin")
+  // validation
+  if (req.body.address && (req.body.address.length < 4 || req.body.address.length > 200)) {
+    throw new ServerError(400, 'supplied adress has invalid length')
+  }
+  if (req.body.name && (req.body.name.length < 2 || req.body.name.length > 50)) {
+    throw new ServerError(400, 'supplied name has invalid length')
+  }
+  if (req.body.phone && (typeof req.body.phone === 'string' || req.body.phone < 5000000000 || req.body.phone > 9999999999)) {
+    throw new ServerError(400, 'supplied phone is invalid')
+  }
+  if (req.body.altPhone && (typeof req.body.altPhone === 'string' || req.body.altPhone < 5000000000 || req.body.altPhone > 9999999999)) {
+    throw new ServerError(400, 'supplied alternate phone is invalid')
+  }
+
+  // find user
+  const dbData = await readFile()
+  const employeeData = dbData.emploies[req.body.email]
+  if (!employeeData) {
+    throw new ServerError(404, 'email not found, contact your admin')
+  }
+
+  // delete req.body.role
+  // delete req.body.password
+  // delete req.body.email
+  // employeeData = { ...employeeData, ...req.body }
+  // dbData.emploies[req.tokenData.email] = employeeData
+
+  employeeData.address = req.body.address ? req.body.address : employeeData.address
+  employeeData.name = req.body.name ? req.body.name : employeeData.name
+  employeeData.phone = req.body.phone ? req.body.phone : employeeData.phone
+  employeeData.altPhone = req.body.altPhone ? req.body.altPhone : employeeData.altPhone
+
+  await writeFile(dbData)
+
+  delete employeeData.password
+  res.end(JSON.stringify(employeeData))
 }
