@@ -7,7 +7,7 @@ exports.cors = (req, res, data) => {
   res.setHeader('Access-Control-Allow-Credentials', true);
 
   if (req.method === 'OPTIONS') {
-    res.end()
+    return res.end()
   }
 
   return { next: true }
