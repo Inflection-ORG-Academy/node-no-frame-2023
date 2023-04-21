@@ -13,6 +13,7 @@ const {
   updateEmployeeProfile
 } = require('./emploies/controllers');
 const { cors } = require('./cors');
+const { createCategory } = require('./categories/controller');
 
 const globalMiddleware = [
   bodyPraser,
@@ -31,6 +32,9 @@ const globalMiddleware = [
   urlMatcher('/emploies/profile', 'PATCH', authentication, updateMyProfile),
   urlMatcher('/emploies/profile/admin', 'POST', authentication, employeeAuthorization("admin"), employeeProfile),
   urlMatcher('/emploies/profile/admin', 'PATCH', authentication, employeeAuthorization("admin"), updateEmployeeProfile),
+
+  // category
+  urlMatcher('/categories', 'POST', authentication, employeeAuthorization("admin"), createCategory),
 
   // not found
   urlMatcher('*', '*'),

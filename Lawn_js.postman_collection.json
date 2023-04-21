@@ -243,7 +243,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"b@b.com\",\n    \"password\": \"123456\"\n}",
+							"raw": "{\n    \"email\": \"a@a.com\",\n    \"password\": \"123456\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -360,6 +360,47 @@
 							"path": [
 								"emploies",
 								"profile"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Category",
+			"item": [
+				{
+					"name": "Create New Category",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ADMIN_JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"kiwi\",\n    \"cid\": 12\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/categories",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"categories"
 							]
 						}
 					},
