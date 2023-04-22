@@ -44,3 +44,13 @@ exports.createCategory = async (req, res, data) => {
 
   res.end(JSON.stringify({ categoryId: newId }))
 }
+
+exports.getCategories = async (req, res, data) => {
+  const dbData = await readFile()
+
+  if (!dbData.categories.length) {
+    throw new ServerError(404, "categories not found")
+  }
+
+  res.end(JSON.stringify({ categories: dbData.categories }))
+}
