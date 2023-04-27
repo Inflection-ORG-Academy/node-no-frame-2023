@@ -54,3 +54,22 @@ exports.createAsset = async (req, res, data) => {
 
   res.end(JSON.stringify(asset))
 }
+
+exports.getAssetByCategory = async (req, res, data) => {
+  const cidStr = req.params.cid
+  const cid = parseInt(cidStr)
+  if (isNaN(cid)) {
+    throw new ServerError(400, "cid is invalid")
+  }
+
+  const dbData = await readFile()
+
+  const assets = []
+  for (let i = 0; i < dbData.assets.length; i++) {
+    if (dbData.assets[i].cid === cid) {
+      assets.push(dbData.assets[i])
+    }
+  }
+
+  res.end(JSON.stringify(assets))
+}
