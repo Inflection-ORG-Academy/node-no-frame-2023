@@ -73,3 +73,31 @@ exports.getAssetByCategory = async (req, res, data) => {
 
   res.end(JSON.stringify(assets))
 }
+
+exports.updateAsset = async (req, res, data) => {
+  const idStr = req.params.id
+  const id = parseInt(idStr)
+  if (isNaN(id)) {
+    throw new ServerError(400, "asset id is invalid")
+  }
+
+  const priceFloat = parseFloat(req.body.price)
+
+  if (req.body.price && isNaN(priceFloat)) {
+    throw new ServerError(400, "asset price is invalid")
+  }
+
+  const dbData = await readFile()
+  let i = 0
+  for (i = 0; i < dbData.assets.length; i++) {
+    if (dbData.assets[i].id === id) {
+      dbData.assets[i].name = req.body.name ? req.body.name : dbData.assets[i].name
+      dbData.assets[i].price = req.body.price ? priceFloat : dbData.assets[i].price
+      break
+    }
+  }
+
+  await writeFile(dbData)
+
+  res.end(JSON.stringify(dbData.assets[i]))
+}
