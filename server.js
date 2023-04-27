@@ -15,6 +15,7 @@ const {
 const { cors } = require('./cors');
 const { createCategory, getCategories, updateCategory } = require('./categories/controller');
 const { createAsset, getAssetByCategory, updateAsset } = require('./assets/controller')
+const { createBooking } = require('./booking/controller');
 
 const globalMiddleware = [
   bodyPraser,
@@ -43,6 +44,9 @@ const globalMiddleware = [
   urlMatcher('/assets', 'POST', authentication, employeeAuthorization("admin"), createAsset),
   urlMatcher('/assets/:cid', 'GET', getAssetByCategory),
   urlMatcher('/assets/:id', 'PATCH', authentication, employeeAuthorization("admin"), updateAsset),
+
+  // booking
+  urlMatcher('/bookings', 'POST', authentication, createBooking),
 
   // not found
   urlMatcher('*', '*'),
