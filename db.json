@@ -93,6 +93,16 @@
       "id": 13,
       "cid": 3,
       "name": "serving"
+    },
+    {
+      "id": 14,
+      "cid": 2,
+      "name": "ac"
+    },
+    {
+      "id": 15,
+      "cid": 2,
+      "name": "non_ac"
     }
   ],
   "assets": [
@@ -112,17 +122,17 @@
     },
     {
       "id": 3,
-      "cid": 2,
-      "name": "non_ac",
-      "price": 1500,
-      "max": 5
+      "cid": 14,
+      "name": "room A1",
+      "description": "ac room with tv",
+      "price": 1500
     },
     {
       "id": 4,
-      "cid": 2,
-      "name": "ac",
-      "price": 2000,
-      "max": 10
+      "cid": 14,
+      "name": "room A2",
+      "description": "ac room with tv",
+      "price": 1500
     },
     {
       "id": 5,
@@ -333,6 +343,111 @@
       "cid": 13,
       "name": "tissue paper",
       "price": 0.5
+    },
+    {
+      "id": 40,
+      "cid": 15,
+      "name": "room N1",
+      "description": "room with fan",
+      "price": 600
+    },
+    {
+      "id": 41,
+      "cid": 15,
+      "name": "room N2",
+      "description": "room with fan",
+      "price": 600
+    },
+    {
+      "id": 42,
+      "cid": 15,
+      "name": "room N3",
+      "description": "room with fan",
+      "price": 600
+    }
+  ],
+  "bookings": [
+    {
+      "id": 1,
+      "email": "c@c.com",
+      "date": "08/05/2023",
+      "bookedItems": [
+        {
+          "id": 2,
+          "cid": 1,
+          "name": "platinum",
+          "description": "hcvhvghsdcvhsjdcvsdhjc",
+          "price": 15000
+        },
+        {
+          "id": 42,
+          "cid": 15,
+          "name": "room N3",
+          "description": "room with fan",
+          "price": 600
+        },
+        {
+          "id": 4,
+          "cid": 14,
+          "name": "room A2",
+          "description": "ac room with tv",
+          "price": 1500
+        },
+        {
+          "id": 6,
+          "cid": 4,
+          "name": "fulki",
+          "price": 30
+        },
+        {
+          "id": 9,
+          "cid": 8,
+          "name": "kadai_paneer",
+          "price": 40
+        },
+        {
+          "id": 10,
+          "cid": 8,
+          "name": "kalogi_krela",
+          "price": 15
+        },
+        {
+          "id": 14,
+          "cid": 9,
+          "name": "polaw",
+          "price": 15
+        },
+        {
+          "id": 19,
+          "cid": 11,
+          "name": "daal_makhani",
+          "price": 35
+        },
+        {
+          "id": 16,
+          "cid": 10,
+          "name": "tawa_roti",
+          "price": 15
+        },
+        {
+          "id": 27,
+          "cid": 7,
+          "name": "coldrink",
+          "price": 10
+        },
+        {
+          "id": 24,
+          "cid": 6,
+          "name": "butter scotch",
+          "price": 35
+        },
+        {
+          "id": 21,
+          "cid": 6,
+          "name": "rajbhog",
+          "price": 25
+        }
+      ]
     }
   ]
 }
