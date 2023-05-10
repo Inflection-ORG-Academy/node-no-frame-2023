@@ -14,8 +14,6 @@ const {
 } = require('./emploies/controllers');
 const { cors } = require('./cors');
 const { createCategory, getCategories, updateCategory } = require('./categories/controller');
-const { getAsset, createAsset, updateAsset } = require('./assets/controller');
-const { createBooking } = require('./bookings/controller');
 
 const globalMiddleware = [
   bodyPraser,
@@ -48,6 +46,14 @@ const globalMiddleware = [
   // booking
   urlMatcher('/bookings', 'POST', authentication, createBooking),
 
+
+  // assets
+  urlMatcher('/assets', 'POST', authentication, employeeAuthorization("admin"), createAsset),
+  urlMatcher('/assets/:cid', 'GET', getAssetByCategory),
+  urlMatcher('/assets/:id', 'PATCH', authentication, employeeAuthorization("admin"), updateAsset),
+
+  // booking
+  urlMatcher('/bookings', 'POST', authentication, createBooking),
 
   // not found
   urlMatcher('*', '*'),
