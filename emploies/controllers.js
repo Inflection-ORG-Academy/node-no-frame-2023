@@ -24,7 +24,7 @@ exports.employeeLogin = async (req, res, data) => {
   }
 
   // verify password
-  if (!verifyPassword(req.body.password, employeeData.password)) {
+  if (! await verifyPassword(req.body.password, employeeData.password)) {
     throw new ServerError(404, 'password is wrong')
   }
 

@@ -51,7 +51,6 @@ exports.getCategories = async (req, res, data) => {
   if (!dbData.categories.length) {
     throw new ServerError(404, "categories not found")
   }
-
   res.end(JSON.stringify({ categories: dbData.categories }))
 }
 
@@ -91,4 +90,14 @@ exports.updateCategory = async (req, res, data) => {
   await writeFile(dbdata)
 
   res.end(JSON.stringify({ ...dbdata.categories[i] }))
+
+  // exports.deleteCategories = async (req, res, data) => {
+  //   const dbData = await readFile()
+  
+  //   if (!dbData.categories.length) {
+  //     throw new ServerError(404, "categories not found")
+  //   }
+  
+  //   res.end(JSON.stringify({ categories: dbData.categories }))
+  // }
 }
